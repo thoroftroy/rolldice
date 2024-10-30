@@ -5,17 +5,17 @@ Installation
 ----------------
 Simply run the following commands:
 
-
 ```
-function copy() {
-  git clone https://github.com/thoroftroy/rolldice.git
-
-  chmod +x add_roll_script.sh
-
-  ./add_roll_script.sh
-
-  source ~/.bashrc
-}
+git clone https://github.com/thoroftroy/rolldice.git
+```
+```
+chmod +x add_roll_script.sh
+```
+```
+./add_roll_script.sh
+```
+```
+source ~/.bashrc
 ```
 
 Manual
@@ -24,6 +24,7 @@ Optionally you could also just download the rolldice.sh script and put it in you
 
 Usage
 -----------------
+```
 Usage: rolldice [option] <expression>
 
 Options:
@@ -34,3 +35,4 @@ Options:
 Examples:
   rolldice 3d6,2d10,5    # Rolls dice
   rolldice flip 3        # Flips a coin 3 times
+```
