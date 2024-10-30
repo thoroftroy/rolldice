@@ -42,8 +42,8 @@ Uninstall
 to uninstall delete the following files: /usr/local/bin/rolldice and /home/<yourusername>/bin/rolldice
 
 ```
-sudo rn -f /usr/local/bin/rolldice
+sudo rm -f /usr/local/bin/rolldice
 ```
 ```
-sudo rn -f /home/<yourusername>/bin/rolldice
+sudo rm -f /home/<yourusername>/bin/rolldice
 ```
