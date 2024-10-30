@@ -3,14 +3,11 @@ A simple command line utility for rolling a dice
 
 Installation
 ----------------
-run git clone https://github.com/thoroftroy/rolldice.git
+Simply run the following commands:
 
-run add_roll_script.sh in your terminal by going to the directory it is downloaded in and running
-
+git clone https://github.com/thoroftroy/rolldice.git
 chmod +x add_roll_script.sh
-
 ./add_roll_script.sh
-
 source ~/.bashrc
 
 Manual
