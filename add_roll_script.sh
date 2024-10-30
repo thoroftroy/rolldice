@@ -70,15 +70,70 @@ parse_expression() {
     echo "Average Roll: $(printf "%.2f" "$average")"
 }
 
-# Check for input
+# Function to flip coins multiple times and display statistics
+flip_coin() {
+    local num_flips=${1:-1}  # Default to 1 flip if no argument is provided
+    local heads_count=0
+    local tails_count=0
+    local results=()
+    
+    for ((i=0; i<num_flips; i++)); do
+        if (( RANDOM % 2 )); then
+            results+=("Heads")
+            heads_count=$((heads_count + 1))
+        else
+            results+=("Tails")
+            tails_count=$((tails_count + 1))
+        fi
+    done
+
+    # Calculate the average (heads as 1, tails as 0)
+    average=$(echo "$heads_count / $num_flips" | bc -l)
+    
+    # Display results
+    echo "Flip results: ${results[*]}"
+    echo "Average roll (Heads as 1, Tails as 0): $(printf "%.2f" "$average")"
+    echo "Total Heads: $heads_count"
+    echo "Total Tails: $tails_count"
+}
+
+# Function to display help information
+display_help() {
+    echo "Usage: rolldice [option] <expression>"
+    echo
+    echo "Options:"
+    echo "  <expression>   Roll dice with specified dice notation (e.g., 3d6,2d10,5)"
+    echo "  flip [count]   Flip a coin the specified number of times and display results."
+    echo "  help, -h       Show this help message and exit."
+    echo
+    echo "Examples:"
+    echo "  rolldice 3d6,2d10,5    # Rolls dice"
+    echo "  rolldice flip 3        # Flips a coin 3 times"
+}
+
+# Check input
 if [[ $# -lt 1 ]]; then
-    echo "Usage: rolldice <expression>"
-    echo "Example: rolldice 3d6,2d10,5"
+    echo "Usage: rolldice [option] <expression>"
+    echo "Type 'rolldice -h' or 'rolldice help' for more information."
     exit 1
 fi
 
-# Call the parse_expression function with the input
-parse_expression "$1"
+# Main logic to handle commands
+case "$1" in
+    flip)
+        flip_coin "${2:-1}"  # Pass the second argument if provided, default to 1 flip
+        ;;
+    help|-h)
+        display_help
+        ;;
+    *)
+        if [[ "$1" =~ ^[0-9]*d[0-9]+(,[0-9]*d[0-9]+)*$ ]]; then
+            parse_expression "$1"
+        else
+            echo "Invalid command. Type 'rolldice -h' or 'rolldice help' for more information."
+        fi
+        ;;
+esac
 EOF
 
 # Make the script executable
