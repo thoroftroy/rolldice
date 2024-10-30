@@ -36,3 +36,14 @@ Examples:
   rolldice 3d6,2d10,5    # Rolls dice
   rolldice flip 3        # Flips a coin 3 times
 ```
+
+Uninstall
+----------------
+to uninstall delete the following files: /usr/local/bin/rolldice and /home/$USR/bin/rolldice
+
+```
+sudo rn -f /usr/local/bin/rolldice
+```
+```
+sudo rn -f /home/$USR/bin/rolldice
+```
