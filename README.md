@@ -1,7 +1,9 @@
 # rolldice
 A simple command line utility for rolling a dice
 
-to install simply run the script in your terminal by going to the directory it is downloaded in and running
+Installation
+----------------
+to install simply run add_roll_script.sh in your terminal by going to the directory it is downloaded in and running
 
 chmod +x add_roll_script.sh
 
@@ -9,7 +11,19 @@ chmod +x add_roll_script.sh
 
 source ~/.bashrc
 
+Manual
+----------------
+Optionally you could also just download the rolldice.sh script and put it in your bash manually. 
 
+Usage
+----------------
+Usage: rolldice [option] <expression>
 
-From that point on you should be able to roll dice in your terminal by simply typing rd, roll, or rolldice followed by any number of dice (1d20,4d6,3d2)
-You can also add numbers with it (1d20,4) will roll 1 20 sided dice and add 4.
+Options:
+  <expression>   Roll dice with specified dice notation (e.g., 3d6,2d10,5)
+  flip [count]   Flip a coin the specified number of times and display results.
+  help, -h       Show this help message and exit.
+
+Examples:
+  rolldice 3d6,2d10,5    # Rolls dice
+  rolldice flip 3        # Flips a coin 3 times
