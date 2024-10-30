@@ -10,28 +10,29 @@ mkdir -p "$HOME/.local/bin"
 cat > "$SCRIPT_PATH" << 'EOF'
 #!/bin/bash
 
-# Function to roll a die and return the result
+# Function to roll a die and return the result with a small delay
 roll_die() {
     local dice_count=$1
     local dice_size=$2
-    local rolls=()
     local sum=0
 
     for ((i=0; i<dice_count; i++)); do
         roll=$(( (RANDOM % dice_size) + 1 ))
-        rolls+=($roll)
+        echo "Roll $((i+1)): $roll"
         sum=$((sum + roll))
+        sleep 0.0000000001  # Delay between each roll
     done
 
-    echo "${rolls[@]} $sum"
+    echo "Total for $dice_count d$dice_size: $sum"
+    average=$(echo "scale=2; $sum / $dice_count" | bc)  # Calculate average
+    echo "Average roll: $average"  # Display average
+    return $sum
 }
 
-# Function to parse the dice expression and roll accordingly
+# Function to parse the dice expression and roll accordingly with individual roll printing
 parse_expression() {
     local expression=$1
     local total=0
-    local total_rolls=0
-    local all_rolls=()
     
     # Split by commas to handle multiple expressions
     IFS=',' read -ra terms <<< "$expression"
@@ -40,58 +41,46 @@ parse_expression() {
         if [[ "$term" =~ ^([0-9]*)d([0-9]+)$ ]]; then
             num_rolls=${BASH_REMATCH[1]:-1}  # Default to 1 if not specified
             dice_size=${BASH_REMATCH[2]}
-            result=$(roll_die $num_rolls $dice_size)
-            rolls=(${result[@]})
-            roll_sum=${rolls[-1]}  # Last element is the sum
-            unset 'rolls[-1]'      # Remove the last element (sum) to show rolls
-            echo "$term: ${rolls[*]} => Total: $roll_sum"
-            all_rolls+=("${rolls[@]}")
+            echo "Rolling $term:"
+            roll_die $num_rolls $dice_size
+            roll_sum=$?  # Get the total sum from the roll_die function
             total=$((total + roll_sum))
-            total_rolls=$((total_rolls + num_rolls))
+            echo "-----------------------------"
         elif [[ "$term" =~ ^[0-9]+$ ]]; then
             echo "$term: $term"
             total=$((total + term))
-            total_rolls=$((total_rolls + 1))
-            all_rolls+=("$term")
         else
             echo "Invalid input: $term"
             exit 1
         fi
     done
 
-    # Calculate average
-    if ((total_rolls > 0)); then
-        average=$(echo "$total / $total_rolls" | bc -l)
-    else
-        average=0
-    fi
-
     echo -e "\nGrand Total: $total"
-    echo "Average Roll: $(printf "%.2f" "$average")"
 }
 
-# Function to flip coins multiple times and display statistics
+# Function to flip coins multiple times and display results with delay
 flip_coin() {
     local num_flips=${1:-1}  # Default to 1 flip if no argument is provided
     local heads_count=0
     local tails_count=0
-    local results=()
     
     for ((i=0; i<num_flips; i++)); do
         if (( RANDOM % 2 )); then
-            results+=("Heads")
+            echo "Flip $((i+1)): Heads"
             heads_count=$((heads_count + 1))
         else
-            results+=("Tails")
+            echo "Flip $((i+1)): Tails"
             tails_count=$((tails_count + 1))
         fi
+        sleep 0.0000001  # Delay between each flip
     done
 
     # Calculate the average (heads as 1, tails as 0)
     average=$(echo "$heads_count / $num_flips" | bc -l)
     
     # Display results
-    echo "Flip results: ${results[*]}"
+    echo
+    echo
     echo "Average roll (Heads as 1, Tails as 0): $(printf "%.2f" "$average")"
     echo "Total Heads: $heads_count"
     echo "Total Tails: $tails_count"
